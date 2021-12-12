@@ -21,7 +21,7 @@ verbose = True
 t = time()
 
 #
-# NOTE:
+# NOTE: You may need to install the following to leverage all of the following gensim functionality.
 # - pip install testfixtures
 # - pip install lxml
 #
