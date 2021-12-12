@@ -20,6 +20,12 @@ verbose = True
 # set up mechanism for timing how long the program takes to execute
 t = time()
 
+#
+# NOTE:
+# - pip install testfixtures
+# - pip install lxml
+#
+
 tqdm.pandas(desc="progress-bar")
 cores = multiprocessing.cpu_count()
 
