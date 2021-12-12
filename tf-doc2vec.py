@@ -1,6 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
+from time import time  # To time our operations
 import random
 import os
 import pickle
@@ -10,21 +11,29 @@ import collections
 import io
 import tarfile
 import urllib.request
-import text_helpers
+import Helpers_Text
 from nltk.corpus import stopwords
 from tensorflow.python.framework import ops
+import nltk
+
+# set up mechanism for timing how long the program takes to execute
+t = time()
+verbose = True
+
+nltk.download('stopwords')
+print('Starting Analysis. Time: {} min'.format(round((time() - t) / 60, 2)))
 
 ops.reset_default_graph()
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # Make a saving directory if it doesn't exist
-data_folder_name = 'temp'
+data_folder_name = 'RawData/rt-polaritydata/rt-polaritydata/'
 if not os.path.exists(data_folder_name):
     os.makedirs(data_folder_name)
 
 # Start a graph session
-sess = tf.Session()
+sess = tf.compat.v1.Session() # tf.Session()
 
 # Declare model parameters
 batch_size = 500
@@ -45,20 +54,20 @@ print_valid_every = 5000
 print_loss_every = 100
 
 # Declare stop words
-# stops = stopwords.words('english')
-stops = []
+stops = stopwords.words('english')
+# stops = []
 
 # We pick a few test words for validation.
 valid_words = ['love', 'hate', 'happy', 'sad', 'man', 'woman']
 # Later we will have to transform these into indices
 
 # Load the movie review data
-print('Loading Data')
-texts, target = text_helpers.load_movie_data(data_folder_name)
+print('Loading Data. Time: {} min'.format(round((time() - t) / 60, 2)))
+texts, target = Helpers_Text.load_movie_data(data_folder_name)
 
 # Normalize text
-print('Normalizing Text Data')
-texts = text_helpers.normalize_text(texts, stops)
+print('Normalizing Text Data. Time: {} min'.format(round((time() - t) / 60, 2)))
+texts = Helpers_Text.normalize_text(texts, stops)
 
 # Texts must contain at least 3 words
 target = [target[ix] for ix, x in enumerate(texts) if len(x.split()) > window_size]
@@ -66,18 +75,18 @@ texts = [x for x in texts if len(x.split()) > window_size]
 assert (len(target) == len(texts))
 
 # Build our data set and dictionaries
-print('Creating Dictionary')
-word_dictionary = text_helpers.build_dictionary(texts, vocabulary_size)
+print('Creating Dictionary. Time: {} min'.format(round((time() - t) / 60, 2)))
+word_dictionary = Helpers_Text.build_dictionary(texts, vocabulary_size)
 word_dictionary_rev = dict(zip(word_dictionary.values(), word_dictionary.keys()))
-text_data = text_helpers.text_to_numbers(texts, word_dictionary)
+text_data = Helpers_Text.text_to_numbers(texts, word_dictionary)
 
 # Get validation word keys
 valid_examples = [word_dictionary[x] for x in valid_words]
 
-print('Creating Model')
+print('Creating Model. Time: {} min'.format(round((time() - t) / 60, 2)))
 # Define Embeddings:
-embeddings = tf.Variable(tf.random_uniform([vocabulary_size, embedding_size], -1.0, 1.0))
-doc_embeddings = tf.Variable(tf.random_uniform([len(texts), doc_embedding_size], -1.0, 1.0))
+embeddings = tf.Variable(tf.random.uniform([vocabulary_size, embedding_size], -1.0, 1.0))
+doc_embeddings = tf.Variable(tf.random.uniform([len(texts), doc_embedding_size], -1.0, 1.0))
 
 # NCE loss parameters
 nce_weights = tf.Variable(tf.truncated_normal([vocabulary_size, concatenated_size],
@@ -123,11 +132,11 @@ init = tf.global_variables_initializer()
 sess.run(init)
 
 # Run the skip gram model.
-print('Starting Training')
+print('Starting Training. Time: {} min'.format(round((time() - t) / 60, 2)))
 loss_vec = []
 loss_x_vec = []
 for i in range(generations):
-    batch_inputs, batch_labels = text_helpers.generate_batch_data(text_data, batch_size,
+    batch_inputs, batch_labels = Helpers_Text.generate_batch_data(text_data, batch_size,
                                                                   window_size, method='doc2vec')
     feed_dict = {x_inputs: batch_inputs, y_target: batch_labels}
 
@@ -179,8 +188,8 @@ target_train = np.array([x for ix, x in enumerate(target) if ix in train_indices
 target_test = np.array([x for ix, x in enumerate(target) if ix in test_indices])
 
 # Convert texts to lists of indices
-text_data_train = np.array(text_helpers.text_to_numbers(texts_train, word_dictionary))
-text_data_test = np.array(text_helpers.text_to_numbers(texts_test, word_dictionary))
+text_data_train = np.array(Helpers_Text.text_to_numbers(texts_train, word_dictionary))
+text_data_test = np.array(Helpers_Text.text_to_numbers(texts_test, word_dictionary))
 
 # Pad/crop movie reviews to specific length
 text_data_train = np.array([x[0:max_words] for x in [y + [0] * max_words for y in text_data_train]])
@@ -228,7 +237,7 @@ init = tf.global_variables_initializer()
 sess.run(init)
 
 # Start Logistic Regression
-print('Starting Logistic Doc2Vec Model Training')
+print('Starting Logistic Doc2Vec Model Training. Time: {} min'.format(round((time() - t) / 60, 2)))
 train_loss = []
 test_loss = []
 train_acc = []
