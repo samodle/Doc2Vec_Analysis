@@ -11,6 +11,9 @@ Initially I started using the tf doc2vec model, after having some struggles with
 - https://groups.google.com/g/gensim/c/0GVxA055yOU
 - https://stackoverflow.com/questions/39843584/gensim-doc2vec-vs-tensorflow-doc2vec
 
+As such I ended up using the DBOW + DM approach outlined in this notebook: https://github.com/RaRe-Technologies/gensim/blob/3c3506d51a2caf6b890de3b1b32a8b85f7566ca5/docs/notebooks/doc2vec-IMDB.ipynb
+
+
 ### Research/Supporting Documentation:
 - Paper from instructions: https://arxiv.org/pdf/1405.4053.pdf
 - Relevant Paper: https://arxiv.org/pdf/1301.3781.pdf
