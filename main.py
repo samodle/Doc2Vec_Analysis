@@ -1,16 +1,30 @@
-# This is a sample Python script.
+import multiprocessing
+from time import time  # To time our operations
+import pandas as pd
+import numpy as np
+from tqdm import tqdm
+from gensim.models import Doc2Vec
+from sklearn import utils
+from sklearn.model_selection import train_test_split
+import gensim
+from sklearn.linear_model import LogisticRegression
+from gensim.models.doc2vec import TaggedDocument
+import re
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# set up mechanism for timing how long the program takes to execute
+t = time()
 
+tqdm.pandas(desc="progress-bar")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCfvfvfvfvharm')
+    # freeze_support()  # include this if packaging as stand alone app/freezing
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    print('Initialization Complete. Time: {} min'.format(round((time() - t) / 60, 2)))
+
+    df = pd.read_csv('Consumer_Complaints.csv')
+    df = df[['Consumer complaint narrative','Product']]
+    df = df[pd.notnull(df['Consumer complaint narrative'])]
+    df.rename(columns = {'Consumer complaint narrative':'narrative'}, inplace = True)
+    print(df.head(15))
