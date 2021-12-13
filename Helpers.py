@@ -28,3 +28,5 @@ def vec_for_learning(model, tagged_docs):
     targets, regressors = zip(*[(doc.tags[0], model.infer_vector(doc.words, steps=20)) for doc in sents])
     return targets, regressors
 
+
+

@@ -1,12 +1,10 @@
 import multiprocessing
 from time import time  # To time our operations
 import pandas as pd
-import numpy as np
 from tqdm import tqdm
 from gensim.models import Doc2Vec
 from sklearn import utils
 from sklearn.model_selection import train_test_split
-import gensim
 from gensim.test.test_doc2vec import ConcatenatedDoc2Vec
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score

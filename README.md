@@ -1,10 +1,20 @@
 # CS6907 Neural Networks Project Submission
 
+## Data
+"The Consumer Complaint Database is a collection of complaints about consumer financial products and services that we sent to companies for response. Complaints are published after the company responds, confirming a commercial relationship with the consumer, or after 15 days, whichever comes first. Complaints referred to other regulators, such as complaints about depository institutions with less than $10 billion in assets, are not published in the Consumer Complaint Database. The database generally updates daily."
+Source: https://catalog.data.gov/dataset/consumer-complaint-database
+
+## Key Files
+- d2v_tf_source.py: Tensorflow d2v model creation and evaluation
+- main.py: Gensim d2v model creation and evaluation
+- Any pdf with 'output' in the name: Contains console output from successful test run of one of the models.
+
 ### Overview
 
-This project will consist of implementing the Doc2Vec network in 
+This project will consist of implementing the Doc2Vec network in Tensorflow in order to classify documents.
+The doc2vec results from Tensorflow will be compared against multiple GenSim doc2vec implementations.
 
-
+ 
 ### Scope Changes
 
 Initially I started using the tf doc2vec model, after having some struggles with initial tf doc2vec tests I found the following threads that indicated gensim may be better than tf for doc2vec.  I wanted to use tf initially because I have used gensim in the past more than tf, however it seemed like the best bet for this project.
