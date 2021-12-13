@@ -2,7 +2,6 @@ import collections
 from time import time  # To time our operations
 import Helpers
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import tensorflow.compat.v1 as tf
 
